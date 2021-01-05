@@ -5,27 +5,25 @@ import os
 import stocks  # stocks.py
 
 
-def install_module(module: str) -> None:
-    import subprocess
-    import sys
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "-U", module])
+# Exits code when necessary modules are missing
+def missing_package() -> None:
+    print("Some modules required to run this program are missing\n"
+          "Run setup.cmd and try again\n\n"
+          "Press any key to continue . . . ", end="")
+    input()
+    exit()
 
 
-# Downloads modules if not installed
 try:
     import discord
     from discord.ext import commands
 except ImportError:
-    install_module("discord.py")
-    import discord
-    from discord.ext import commands
+    missing_package()
 
 try:
     from dotenv import load_dotenv
 except ImportError:
-    install_module('python-dotenv')
-    from dotenv import load_dotenv
-
+    missing_package()
 
 # Logs information and warnings about the bot to a .log file
 logger = logging.getLogger('discord')

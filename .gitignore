@@ -4,8 +4,10 @@
 
 # Custom ignored files
 /.idea/
+/__pycache__/
 /venv/
 /Graphs/
 /Data/
 /Backups/
 /discord.log
+/.env

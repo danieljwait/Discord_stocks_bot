@@ -3,24 +3,25 @@
 import pickle
 import random
 
-STOCKS_LIST = ["League of Legends", "Rust", "Hearthstone"]
-DEFAULT_VALUE = 0.5
-BUY_SELL_MARGIN = 0.02
-FIXED_DP = 4  # Decimal points of accuracy
 
-
-# Pip installs any modules that are not already present
-def install_module(module: str) -> None:
-    import subprocess
-    import sys
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "-U", module])
+# Exits code when necessary modules are missing
+def missing_package() -> None:
+    print("Some modules required to run this program are missing\n"
+          "Run setup.cmd and try again\n\n"
+          "Press any key to continue . . . ", end="")
+    input()
+    exit()
 
 
 try:
     import matplotlib.pyplot as plt
-except ImportError:  # Downloads module if not installed
-    install_module("matplotlib")
-    import matplotlib.pyplot as plt
+except ImportError:
+    missing_package()
+
+STOCKS_LIST = ["League of Legends", "Rust", "Hearthstone"]
+DEFAULT_VALUE = 0.5
+BUY_SELL_MARGIN = 0.02
+FIXED_DP = 4  # Decimal points of accuracy
 
 
 # Path to the data files
@@ -35,7 +36,7 @@ def graph_path(stock_name: str) -> str:
 
 # Saves stock data (in .data file)
 def save_data(data: list, stock_name: str) -> None:
-    with open(data_path(stock_name), 'wb') as file:  # Overwrites any existing file
+    with open(data_path(stock_name), 'wb+') as file:  # Overwrites any existing file
         pickle.dump(data, file, pickle.HIGHEST_PROTOCOL)
 
 
@@ -167,4 +168,6 @@ def update_plots(days: int) -> None:
 if __name__ == '__main__':
     update_stocks()
     update_plots(50)  # Default plot is last 50 days
-    print(summary_table())
+
+    #  Uncomment for summary table
+    #  print(summary_table())
