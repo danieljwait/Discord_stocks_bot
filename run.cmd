@@ -33,3 +33,4 @@ GOTO CommonExit
 
 :CommonExit
 PAUSE
+EXIT /b
