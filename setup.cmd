@@ -2,12 +2,14 @@
 CD "%~dp0%"
 TITLE Setup
 
+GOTO ChooseTime
+
 REM When text file of packages to install doesnt exist
 IF NOT EXIST requirements.txt GOTO NoRequirements
 
 REM Checks that python is installed
 python --version > tmpFile.txt
-IF ERRORLEVEL 1 GOTO NoPython
+IF %ERRORLEVEL% NEQ 0 GOTO NoPython
 
 REM Temp file allows version to be in a variable
 SET /p full_version=<tmpFile.txt
@@ -20,7 +22,7 @@ IF NOT "%version%"=="Python 3.8" (
 	ECHO Version other than 3.8 have not been tested and may be cause instability
 
 	:Continue
-	SET /p choice="Do you want to continue [y/n]: "
+	SET /p choice="Do you want to continue (y/n)? "
 	IF /I "%choice%"=="y" GOTO Setup
 	IF /I "%choice%"=="n" GOTO CommonExit
 	GOTO Continue
@@ -46,14 +48,18 @@ REM Generates file structure
 IF NOT EXIST Data/ MKDIR Data
 IF NOT EXIST Graphs/ MKDIR Graphs
 
+REM Creates virtual environment
 ECHO Creating virtual environment...
 python -m venv venv\
 
-ECHO Creating scheduled task to run stocks.py daily at 4pm...
-SCHTASKS /Create /SC DAILY /ST 16:00 /F /TN Custom\Stocks /TR "%~dp0%\run_python.cmd stocks.py"
+REM Creates scheduled task to automate stocks program
+SET /p hour="Which hour do you want the stocks to update (24hr format)? "
+SCHTASKS /Create /SC DAILY /ST %hour%:00 /F /TN Custom\Stocks /TR "%~dp0%\run_python.cmd stocks.py"
+IF %ERRORLEVEL% NEQ 0 GOTO ChooseTime
 
 REM Installs all the required modules to a virtual environment
 .\venv\Scripts\activate && pip install -r requirements.txt && deactivate && ECHO Setup complete && GOTO CommonExit
 
 :CommonExit
 PAUSE
+EXIT /b
