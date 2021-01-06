@@ -15,11 +15,11 @@ Run `setup.cmd`, which will do the following:
 
 #### Automatic
 
-`stocks.py` will automatically run daily to update the stocks.
+`stocks.py` will automatically run daily to update the stocks
 
 #### Manual
 
-To run either of the programs manually, execute `run.cmd` and pass the python file name as an argument.
+To run either of the programs manually, execute `run.cmd` and pass the python file name as an argument
 
 ```shell script
 $ run.cmd bot.py
@@ -30,7 +30,7 @@ Note: __Running `stocks.py` more than once per day will progress the stocks by m
 
 ## Compatibility
 
-The program has only been tested on the following, other version or software may cause instabilities
+The program has only been tested on the following, other versions or software may cause instabilities
 - Windows 10 (version 1909)
 - Python 3.8.5
 - The python packages listed in `requirements.txt`
