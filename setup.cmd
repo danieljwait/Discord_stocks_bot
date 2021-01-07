@@ -2,8 +2,6 @@
 CD "%~dp0%"
 TITLE Setup
 
-GOTO ChooseTime
-
 REM When text file of packages to install doesnt exist
 IF NOT EXIST requirements.txt GOTO NoRequirements
 
